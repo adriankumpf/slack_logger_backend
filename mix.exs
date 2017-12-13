@@ -6,18 +6,17 @@ defmodule SlackLoggerBackend.Mixfile do
       app: :slack_logger_backend,
       description: "A logger backend for posting errors to Slack.",
       version: "0.1.19",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
+      preferred_cli_env: [coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test],
       package: package()
     ]
   end
 
   def application do
-    [applications: [:logger, :httpoison, :gen_stage],
-     mod: {SlackLoggerBackend, []}]
+    [applications: [:logger, :httpoison, :gen_stage], mod: {SlackLoggerBackend, []}]
   end
 
   defp deps do

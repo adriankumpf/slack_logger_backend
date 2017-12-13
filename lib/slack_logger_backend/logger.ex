@@ -1,5 +1,4 @@
 defmodule SlackLoggerBackend.Logger do
-
   @moduledoc """
   The actual logger backend for sending logger events to Slack.
   """
@@ -30,15 +29,19 @@ defmodule SlackLoggerBackend.Logger do
 
   @doc false
   def handle_event({level, _pid, {_, message, _timestamp, detail}}, %{levels: []} = state) do
-    levels = case get_env(:levels) do
-      nil ->
-        @default_log_levels
-      levels ->
-        levels
-    end
+    levels =
+      case get_env(:levels) do
+        nil ->
+          @default_log_levels
+
+        levels ->
+          levels
+      end
+
     if level in levels do
       handle_event(level, message, detail)
     end
+
     {:ok, %{state | levels: levels}}
   end
 
@@ -47,6 +50,7 @@ defmodule SlackLoggerBackend.Logger do
     if level in levels do
       handle_event(level, message, detail)
     end
+
     {:ok, state}
   end
 
@@ -64,21 +68,58 @@ defmodule SlackLoggerBackend.Logger do
     case System.get_env(@env_webhook) do
       nil ->
         get_env(:slack)[:url]
+
       url ->
         url
     end
   end
 
-  defp handle_event(level, message, [pid: _, application: application, module: module, function: function, file: file, line: line]) do
+  defp handle_event(
+         level,
+         message,
+         pid: _,
+         application: application,
+         module: module,
+         function: function,
+         file: file,
+         line: line
+       ) do
     {level, message, application, module, function, file, line}
     |> send_event
   end
 
-  defp handle_event(level, message, [pid: pid, request_id: _request_id, application: application, module: module, function: function, file: file, line: line]) do
-    handle_event(level, message, [pid: pid, application: application, module: module, function: function, file: file, line: line])
+  defp handle_event(
+         level,
+         message,
+         pid: pid,
+         request_id: _request_id,
+         application: application,
+         module: module,
+         function: function,
+         file: file,
+         line: line
+       ) do
+    handle_event(
+      level,
+      message,
+      pid: pid,
+      application: application,
+      module: module,
+      function: function,
+      file: file,
+      line: line
+    )
   end
 
-  defp handle_event(level, message, [pid: _, module: module, function: function, file: file, line: line]) do
+  defp handle_event(
+         level,
+         message,
+         pid: _,
+         module: module,
+         function: function,
+         file: file,
+         line: line
+       ) do
     {level, message, module, function, file, line}
     |> send_event
   end
@@ -92,7 +133,10 @@ defmodule SlackLoggerBackend.Logger do
   end
 
   defp get_env(key, default \\ nil) do
-    Application.get_env(SlackLoggerBackend, key, Application.get_env(:slack_logger_backend, key, default))
+    Application.get_env(
+      SlackLoggerBackend,
+      key,
+      Application.get_env(:slack_logger_backend, key, default)
+    )
   end
-
 end
