@@ -1,10 +1,11 @@
-defmodule SlackLoggerBackend.Logger do
+defmodule TelegramLoggerBackend.Logger do
   @moduledoc """
-  The actual logger backend for sending logger events to Slack.
+  The actual logger backend for sending logger events to Telegram.
   """
 
   use GenEvent
-  alias SlackLoggerBackend.Producer
+
+  alias TelegramLoggerBackend.Producer
 
   @env_webhook "SLACK_LOGGER_WEBHOOK_URL"
   @default_log_levels [:error]
@@ -67,7 +68,7 @@ defmodule SlackLoggerBackend.Logger do
   defp get_url do
     case System.get_env(@env_webhook) do
       nil ->
-        get_env(:slack)[:url]
+        get_env(:telegram)[:url]
 
       url ->
         url
@@ -134,9 +135,9 @@ defmodule SlackLoggerBackend.Logger do
 
   defp get_env(key, default \\ nil) do
     Application.get_env(
-      SlackLoggerBackend,
+      TelegramLoggerBackend,
       key,
-      Application.get_env(:slack_logger_backend, key, default)
+      Application.get_env(:telegram_logger_backend, key, default)
     )
   end
 end

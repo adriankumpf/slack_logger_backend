@@ -1,9 +1,9 @@
-defmodule SlackLoggerBackend.Pool do
+defmodule TelegramLoggerBackend.Pool do
   @moduledoc """
-  A pool of workers for sending messages to Slack.
+  A pool of workers for sending messages to Telegram.
   """
 
-  alias SlackLoggerBackend.PoolWorker
+  alias TelegramLoggerBackend.PoolWorker
 
   @doc false
   def start_link(pool_size) do

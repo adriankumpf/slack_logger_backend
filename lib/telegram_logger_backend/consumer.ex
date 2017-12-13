@@ -1,13 +1,17 @@
-defmodule SlackLoggerBackend.Consumer do
+defmodule TelegramLoggerBackend.Consumer do
   @moduledoc """
-  Consumes logger events and pushes them onto the worker pool to send to Slack.
+  Consumes logger events and pushes them onto the worker pool to send to Telegram.
   """
+
   use GenStage
-  alias SlackLoggerBackend.{Formatter, Pool}
+
+  alias TelegramLoggerBackend.{Formatter, Pool}
+
+  @name __MODULE__
 
   @doc false
   def start_link(max_demand, min_demand) do
-    GenStage.start_link(__MODULE__, {max_demand, min_demand}, name: __MODULE__)
+    GenStage.start_link(__MODULE__, {max_demand, min_demand}, name: @name)
   end
 
   @doc false

@@ -1,10 +1,11 @@
-defmodule SlackLoggerBackend.Formatter do
+defmodule TelegramLoggerBackend.Formatter do
   @moduledoc """
-  Formats log events into pretty Slack messages.
+  Formats log events into pretty Telegram messages.
   """
 
   use GenStage
-  alias SlackLoggerBackend.{Producer, FormatHelper}
+
+  alias TelegramLoggerBackend.{Producer, FormatHelper}
 
   @doc false
   def start_link(max_demand, min_demand) do
@@ -22,14 +23,10 @@ defmodule SlackLoggerBackend.Formatter do
 
   @doc false
   def handle_events(events, _from, state) do
-    events = Enum.map(events, &format_event/1)
-    {:noreply, events, state}
+    {:noreply, Enum.map(events, &format_event/1), state}
   end
 
-  @doc """
-  Formats a log event for Slack.
-  """
-  def format_event({url, event}) do
+  defp format_event({url, event}) do
     {url, FormatHelper.format_event(event)}
   end
 end

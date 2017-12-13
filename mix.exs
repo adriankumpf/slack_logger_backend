@@ -1,10 +1,10 @@
-defmodule SlackLoggerBackend.Mixfile do
+defmodule TelegramLoggerBackend.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :slack_logger_backend,
-      description: "A logger backend for posting errors to Slack.",
+      app: :telegram_logger_backend,
+      description: "A logger backend for posting errors to Telegram.",
       version: "0.1.19",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -16,7 +16,8 @@ defmodule SlackLoggerBackend.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison, :gen_stage], mod: {SlackLoggerBackend, []}]
+    [extra_applications: [],
+     mod: {TelegramLoggerBackend, []}]
   end
 
   defp deps do
@@ -40,7 +41,7 @@ defmodule SlackLoggerBackend.Mixfile do
       files: ["lib", "mix.exs", "README*"],
       licenses: ["MIT"],
       maintainers: ["Craig Paterson"],
-      links: %{"Github" => "https://github.com/craigp/slack_logger_backend"}
+      links: %{"Github" => "https://github.com/craigp/telegram_logger_backend"}
     ]
   end
 end

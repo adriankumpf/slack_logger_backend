@@ -1,8 +1,8 @@
 ExUnit.start()
 
-defmodule SlackLoggerBackend.PoolWorkerTest do
+defmodule TelegramLoggerBackend.PoolWorkerTest do
   use ExUnit.Case
-  alias SlackLoggerBackend.{PoolWorker}
+  alias TelegramLoggerBackend.{PoolWorker}
 
   setup do
     bypass = Bypass.open()
@@ -10,7 +10,7 @@ defmodule SlackLoggerBackend.PoolWorkerTest do
     {:ok, %{bypass: bypass, url: url}}
   end
 
-  test "posts the error to the Slack incoming webhook", %{
+  test "posts the error to the Telegram incoming webhook", %{
     bypass: bypass,
     url: url
   } do
